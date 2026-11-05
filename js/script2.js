@@ -1,11 +1,18 @@
-let colmeia = document.getElementById("palco").getContext("2d")
+let canvas = document.getElementById("palco").getContext("2d")
 
 function gameLoop() {
 	MonoBehaivour.updateAll()
-	console.log("update!")
+	Time.update()
 
 	requestAnimationFrame(gameLoop)
 }
 
-requestAnimationFrame(gameLoop)
-// ia do google falou que requestAnimationFrame era melhor pq o setInterval não espera o frame terminar, e isso gera lag.
+const b = new Bee();
+
+function main() {
+	MonoBehaivour.startAll()
+	gameLoop()
+}
+
+requestAnimationFrame(main)
+// ia do google falou que requestAnimationFrame era melhor pq o setInterval não espera o frame terminar, e um gameLoop por definição roda POP FRAME.
