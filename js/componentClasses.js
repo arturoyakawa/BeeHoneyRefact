@@ -1,5 +1,20 @@
-class SpriteRenderer extends Component {
+class Component {
+	parent
 
+	constructor(parent) {
+		this.parent = parent
+	}
+
+	destroy() {
+		this.parent = null
+	}
+}
+
+class SpriteRenderer extends Component {
+	constructor() {
+		super()
+		console.log("i exist now")
+	}
 }
 
 class BodyMover extends Component {

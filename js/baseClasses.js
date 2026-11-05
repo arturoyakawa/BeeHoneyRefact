@@ -1,21 +1,22 @@
 class MonoBehaivour {
 	static #profiles = new Map()
 	static #nextId = 1
+	static #toDestroy = new Set() // fila pra destruir no fim do frame
 	
-	#components = new WeakMap()
+	#components = new Map()
+
+	transform = new Transform()
 
 	constructor() {
 		this.id = MonoBehaivour.#nextId++
 		MonoBehaivour.#profiles.set(this.id, this)
 
-		this.addComponent(new Transform())
+		this.addComponent(this.transform)
 	}
 
 	destroy() {
-		MonoBehaivour.#profiles.delete(this.id)
+		MonoBehaivour.#toDestroy.add(this)
 	}
-
-	// eu queria que métodos abstract existissem aqui
 
 	update() {
 		
@@ -33,8 +34,8 @@ class MonoBehaivour {
 
 	/**
 	 * @template T
-	 * @param {new (...args: any[]) => T} componentClass - A classe do componente (ex: Physics)
-	 * @returns {T | null} - O VS Code infere que o retorno é exatamente o tipo T!
+	 * @param {new (...args: any[]) => T} componentClass
+	 * @returns {T | null} 
 	 */
 	getComponent(componentClass) {
 		return this.#components.get(componentClass) || null
@@ -51,22 +52,34 @@ class MonoBehaivour {
 			obj.start()
 		}
 	}
+
+	static destroyPending() {
+		for (const obj of MonoBehaivour.#toDestroy) {
+			MonoBehaivour.#profiles.delete(obj.id)
+
+			for (const component of obj.#components.values()) {
+				component.destroy()
+			}
+		
+			obj.#components.clear()
+		}
+		MonoBehaivour.#toDestroy.clear()
+	}
 }
 
 class Time {
 	static #deltaTime
 	static get deltaTime() {
-		// também não existe {get; private set;}, e eu quero preservar o encapsulamento.
 		return Time.#deltaTime
 	}
 
-	static #time
+	static #time = performance.now() / 1000
 	static get time() {
-		return Time.#time
+		return this.#time
 	}
 
 	static update() {
-		const currentTime = performance.now()
+		const currentTime = performance.now() / 1000
 		Time.#deltaTime = (currentTime - Time.time)
 		Time.#time = currentTime
 	}
@@ -91,26 +104,40 @@ class Vector2 {
 	}
 
 	add(other) {
-		return new Vector2(this.x + other.x, this.y + other.y)
-	}
-
-	subtract(other) {
-		return new Vector2(this.x - other.x, this.y - other.y)
-	}
-
-	multiply(other) {
-		return new Vector2(this.x * other.x, this.y * other.y)
+		this.#x += other.x;
+		this.#y += other.y;
+		return this;
 	}
 
 	scale(scalar) {
-		return new Vector2(this.x * scalar, this.y * scalar)
+		this.#x *= scalar;
+		this.#y *= scalar;
+		return this;
+	}
+
+	copy() {
+		return new Vector2(this.#x, this.#y);
 	}
 }
 
-class Component {
-	parent
+class Input {
+	static #keys = new Map();
 
-	constructor(parent) {
-		this.parent = parent
+	static init() {
+		window.addEventListener("keydown", (event) => {
+			Input.#keys.set(event.code, true);
+		});
+
+		window.addEventListener("keyup", (event) => {
+			Input.#keys.set(event.code, false);
+		});
+	}
+
+	/**
+	 * @param {string} keyCode)
+	 * @returns {boolean}
+	 */
+	static isKeyDown(keyCode) {
+		return Input.#keys.get(keyCode) === true;
 	}
 }
