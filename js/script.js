@@ -39,7 +39,7 @@ function draw(){ // responsável por desenhar elementos na tela
     aranha.desenharObj()   
 }
 
-function update(){ //responsável por atualizar os quadros do jogo
+function gameLoop(){ //responsável por atualizar os quadros do jogo
     abelha.move()
     abelha.animacao()
     aranha.move()
@@ -50,7 +50,7 @@ function update(){ //responsável por atualizar os quadros do jogo
 
 function main(){
     colmeia.clearRect(0,0,500,690)
-    update()
+    gameLoop()
     draw()
 }   
 
