@@ -40,3 +40,30 @@ class Time {
 		Time.#deltaTime = (currentTime - Time.deltaTime)
 	}
 }
+
+// eu queria que existissem structs
+class Vector2 {
+	x
+	y
+
+	constructor(x, y) {
+		this.x = x
+		this.y = y
+	}
+
+	add(other) {
+		return new Vector2(this.x + other.x, this.y + other.y)
+	}
+
+	subtract(other) {
+		return new Vector2(this.x - other.x, this.y - other.y)
+	}
+
+	multiply(other) {
+		return new Vector2(this.x * other.x, this.y * other.y)
+	}
+
+	scale(scalar) {
+		return new Vector2(this.x * scalar, this.y * scalar)
+	}
+}

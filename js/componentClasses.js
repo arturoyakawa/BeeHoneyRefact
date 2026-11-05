@@ -1,0 +1,7 @@
+class SpriteRenderer {
+
+}
+
+class BodyMover {
+	
+}
