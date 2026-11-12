@@ -1,6 +1,6 @@
 /////////////  DEBUG ///////////////////////////
 
-const desiredFps = 166
+const desiredFps = 30
 const frameInterval = 1 / desiredFps
 
 ///////////////////////////////////////////////
@@ -31,7 +31,8 @@ const spider = new GameObject(100,100,100,100)
 .append(new VerticalScroller(690, -100))
 
 const flower = new GameObject(0,0,50,50)
-.append(new SpriteRenderer("img/flower1.png"))
+.append(new Flower())
+.append(new SpriteRenderer("img/florwer1.png"))
 .append(new VerticalScroller(690, -100))
 
 ///////////////////////////////////////////////
