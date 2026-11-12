@@ -1,7 +1,7 @@
 class Bee extends MonoBehaiovur
 {
 	#animation
-	speed = 4
+	speed = 4 * 166
 	health = 3
 	score = 0
 
@@ -24,11 +24,11 @@ class Bee extends MonoBehaiovur
 		this.#animation.update()
 		if (Input.isKeyDown("KeyD"))
 		{
-			this.transform.position.add(Vector2.right.copy().scale(this.speed))
+			this.transform.position.add(Vector2.right.copy().scale(this.speed * Time.deltaTime))
 		}
 		else if (Input.isKeyDown("KeyA"))
 		{
-			this.transform.position.add(Vector2.right.copy().scale(-this.speed))
+			this.transform.position.add(Vector2.right.copy().scale(-this.speed * Time.deltaTime))
 		}
 	}
 }
@@ -55,6 +55,24 @@ class Spider extends MonoBehaiovur
 	}
 }
 
+class Flower extends MonoBehaiovur
+{
+	/** @type {VerticalScroller} */
+	#verticalScroller
+
+	speed = 3*166
+
+	start()
+	{
+		this.#verticalScroller = this.gameObject.getComponent(VerticalScroller)
+	}
+
+	update()
+	{
+		this.#verticalScroller.update(this.speed)
+	}
+}
+
 class Background extends MonoBehaiovur
 {
 	speed
@@ -73,7 +91,7 @@ class Background extends MonoBehaiovur
 	{
 		const transform = this.gameObject.getComponent(Transform)
 		const position = transform.position
-		position.add(new Vector2(0, this.speed))
+		position.add(new Vector2(0, this.speed * Time.deltaTime))
 		if (position.y > this.limit)
 		{
 			transform.position = new Vector2(0, this.startPos)

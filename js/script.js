@@ -8,11 +8,11 @@ const frameInterval = 1 / desiredFps
 ///////////////////////////////////////////////
 
 const background = new GameObject(0,0,500,690)
-.append(new Background(3, 690, 0))
+.append(new Background(3 * 166, 690, 0))
 .append(new SpriteRenderer("img/bg.png"))
 
 const background2 = new GameObject(0,-690,500,690)
-.append(new Background(3, 0, -690))
+.append(new Background(3 * 166, 0, -690))
 .append(new SpriteRenderer("img/bg.png"))
 
 const bee = new GameObject(200,500,100,100)
@@ -28,6 +28,10 @@ const spider = new GameObject(100,100,100,100)
 .append(new SpriteAnimation(4, .08, frame => {
 	return "img/spider"+frame+".png	"
 }))
+.append(new VerticalScroller(690, -100))
+
+const flower = new GameObject(0,0,50,50)
+.append(new SpriteRenderer("img/flower1.png"))
 .append(new VerticalScroller(690, -100))
 
 ///////////////////////////////////////////////

@@ -114,7 +114,6 @@ class VerticalScroller extends Component
 
 	update(increment)
 	{
-		console.log(increment, Time.deltaTime)
 		this.transform.position.add(Vector2.up.copy().scale(increment * Time.deltaTime))
 		if (this.transform.position.y > this.threshold)
 		{
