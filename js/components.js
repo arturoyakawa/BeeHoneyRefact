@@ -14,6 +14,7 @@ class Transform extends Component
 
 class MonoBehaiovur extends Component
 {
+	/** @type {Transform} */
 	transform
 
 	constructor()
@@ -95,6 +96,29 @@ class SpriteAnimation extends Component
 		if (image)
 		{
 			spriteRenderer.image = image
+		}
+	}
+}
+
+class VerticalScroller extends Component
+{
+	threshold
+	initial
+
+	constructor(threshold, initial)
+	{
+		super()
+		this.threshold = threshold
+		this.initial = initial
+	}
+
+	update(increment)
+	{
+		console.log(increment, Time.deltaTime)
+		this.transform.position.add(Vector2.up.copy().scale(increment * Time.deltaTime))
+		if (this.transform.position.y > this.threshold)
+		{
+			this.transform.position = new Vector2(Math.random() * (500-this.transform.scale.x), this.initial)
 		}
 	}
 }

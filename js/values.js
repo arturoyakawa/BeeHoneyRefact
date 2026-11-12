@@ -57,6 +57,8 @@ class Vector2
 	}
 }
 
+let lastFrame = undefined
+
 class Time {
 	static #deltaTime = 0
 	static get deltaTime() {
@@ -64,16 +66,27 @@ class Time {
 		return this.#deltaTime
 	}
 
-	static #time = 0
+	static #time = this.getTime()
 	static get time() {
 		return this.#time
 	}
 
-	static update() {
-		const currentTime = performance.now() / 1000
-		const oldTime = this.#time
+	static getTime()
+	{
+		return performance.now() / 1000
+	}
+
+	static tick()
+	{
+		const currentTime = this.getTime()
 		this.#time = currentTime
-		this.#deltaTime = (currentTime - oldTime)
+	}
+
+	static frameRendered() {
+		if (lastFrame === undefined)
+			lastFrame = this.#time
+		this.#deltaTime = (this.#time - lastFrame)
+		lastFrame = this.#time
 	}
 }
 

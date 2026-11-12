@@ -35,16 +35,23 @@ class Bee extends MonoBehaiovur
 
 class Spider extends MonoBehaiovur
 {
+	/** @type {SpriteAnimation} */
 	#animation
+	/** @type {VerticalScroller} */
+	#verticalScroller
+
+	speed = 3*166
 
 	start()
 	{
-		this.#animation = this.gameObject.getComponent(SpriteAnimation)
+		this.#animation = this.gameObject.getComponent(SpriteAnimation)	
+		this.#verticalScroller = this.gameObject.getComponent(VerticalScroller)
 	}
 
 	update()
 	{
 		this.#animation.update()
+		this.#verticalScroller.update(this.speed)
 	}
 }
 

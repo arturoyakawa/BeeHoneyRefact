@@ -113,3 +113,16 @@ class RendererSystem extends System
 		}
 	}
 }
+
+class PhysicsSystem extends System
+{
+	static components = new Set()
+
+	static update(physicsComponent)
+	{
+		switch (physicsComponent)
+		{
+			
+		}
+	}
+}

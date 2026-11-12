@@ -1,4 +1,9 @@
+/////////////  DEBUG ///////////////////////////
 
+const desiredFps = 166
+const frameInterval = 1 / desiredFps
+
+///////////////////////////////////////////////
 
 ///////////////////////////////////////////////
 
@@ -23,17 +28,27 @@ const spider = new GameObject(100,100,100,100)
 .append(new SpriteAnimation(4, .08, frame => {
 	return "img/spider"+frame+".png	"
 }))
+.append(new VerticalScroller(690, -100))
 
 ///////////////////////////////////////////////
 
 function gameLoop() {
-	Time.update()
+	requestAnimationFrame(gameLoop)
+	
+	Time.tick()
+
+  	if (Time.time - lastFrame < frameInterval) {
+	    return;
+  	}
+
+	Time.frameRendered()
+
+	lastFrame = Time.time
+
 	GameObject.destroyPending()
 	BehaivourSystem.tick()
 	TransformSystem.tick()
 	RendererSystem.tick()
-
-	requestAnimationFrame(gameLoop)
 }
 
 function main() {
