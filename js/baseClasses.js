@@ -1,33 +1,21 @@
 class GameObject {
-
+	
 }
 
 class Component {
-  	static #profiles = new WeakMap();
   	parent = null;
 
-  	static #getRegistry(parent) {
-    	return Component.#profiles.get(parent);
-  	}
+	start()
+	{
 
-  	init(parent) {
-    	this.parent = parent;
-    
-    	if (!Component.#profiles.has(parent)) {
-      		Component.#profiles.set(parent, new Map());
-		}
-    
-    	Component.#getRegistry(parent).set(this.constructor, this);
-  	}
+	}
 
-  	static get(parent, componentClass) {
-    	return Component.#getRegistry(parent)?.get(componentClass) || null;
-  	}
+	update()
+	{
+		
+	}
 
   	destroy() {
-    	if (this.parent) {
-      		Component.#getRegistry(this.parent)?.delete(this.constructor);
-    	}
     	this.parent = null;
   	}
 }
@@ -42,7 +30,9 @@ class MonoBehaivour {
 	transform = new Transform()
 
 	constructor() {
-		this.id = MonoBehaivour.#nextId++
+		this.id = MonoBehaivour.#nextId
+		MonoBehaivour.#nextId++
+
 		MonoBehaivour.#profiles.set(this.id, this)
 
 		this.addComponent(this.transform)
@@ -57,7 +47,23 @@ class MonoBehaivour {
 	}
 
 	start() {
-		
+
+	}
+
+	updateComponents()
+	{
+		for (const component in this.#components.values())
+		{
+			component.update()
+		}
+	}
+
+	startComponents()
+	{
+		for (const component in this.#components.values())
+		{
+			component.start()
+		}
 	}
 
 	addComponent(component) {
@@ -75,15 +81,17 @@ class MonoBehaivour {
 		return this.#components.get(componentClass) || null
 	}
 
-	static updateAll() {
+	static updateAll() {		
 		for (const obj of MonoBehaivour.#profiles.values()) {
 			obj.update()
+			obj.updateComponents()
 		}
 	}
 
 	static startAll() {
 		for (const obj of MonoBehaivour.#profiles.values()) {
 			obj.start()
+			obj.startComponents()
 		}
 	}
 
