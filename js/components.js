@@ -1,0 +1,84 @@
+class Transform extends Component
+{
+	position
+	scale
+
+	constructor(px = 0, py = 0, sx = 40, sy = 40)
+	{
+		super()
+		this.position = new Vector2(px, py)
+		this.scale = new Vector2(sx, sy)
+		TransformSystem.register(this)
+	}
+}
+
+class MonoBehaiovur extends Component
+{
+	transform
+
+	constructor()
+	{
+		super()
+		BehaivourSystem.register(this)
+	}
+}
+
+class Renderer extends Component
+{
+	constructor()
+	{
+		super()
+		RendererSystem.register(this)
+	}
+}
+
+class SpriteRenderer extends Renderer
+{
+	image
+	constructor(initialImage)
+	{
+		super()
+		this.image = initialImage
+	}
+}
+
+class SpriteAnimation extends Component
+{
+	currentFrame = 0
+	getFrameCallback
+	
+	#timer
+	#deltaFrameDuration
+	#animationLength
+	
+	constructor(animationLength = 2, deltaFrameDuration = 1, getFrameCallback)
+	{
+		super()
+		this.#deltaFrameDuration = deltaFrameDuration
+		this.getFrameCallback = getFrameCallback
+		this.#timer = deltaFrameDuration
+		this.#animationLength = animationLength
+	}
+
+	update()
+	{
+		this.#timer += Time.deltaTime
+		if (this.#timer >= this.#deltaFrameDuration)
+		{
+			this.#timer = 0
+			console.log("step")
+			this.frameStep()
+		}
+	}
+
+	frameStep()
+	{
+		this.currentFrame = this.currentFrame % this.#animationLength + 1
+		const spriteRenderer = this.gameObject.getComponent(SpriteRenderer)
+		const image = this.getFrameCallback?.(this.currentFrame)
+		if (image)
+		{
+			spriteRenderer.image = image
+		}
+	}
+}

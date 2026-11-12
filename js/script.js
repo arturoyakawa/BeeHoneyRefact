@@ -1,19 +1,46 @@
-let canvas = document.getElementById("palco").getContext("2d")
+
+
+///////////////////////////////////////////////
+
+const background = new GameObject(0,0,500,690)
+.append(new SpriteRenderer("img/bg.png"))
+.append(new Background(3, 690, 0))
+
+const background2 = new GameObject(0,-690,500,690)
+.append(new SpriteRenderer("img/bg.png"))
+.append(new Background(3, 0, -690))
+
+const bee = new GameObject(200,500,100,100)
+.append(new SpriteRenderer("img/bee1.png"))
+.append(new SpriteAnimation(4, .08, frame => {
+	return "img/bee"+frame+".png"
+}))
+.append(new Bee())
+
+const spider = new GameObject(100,100,100,100)
+.append(new SpriteRenderer("img/spider1.png"))
+.append(new SpriteAnimation(4, .08, frame => {
+	return "img/spider"+frame+".png	"
+}))
+.append(new Spider())
+
+///////////////////////////////////////////////
 
 function gameLoop() {
-	MonoBehaivour.updateAll()
 	Time.update()
+	GameObject.destroyPending()
+	BehaivourSystem.tick()
+	TransformSystem.tick()
+	RendererSystem.tick()
 
 	requestAnimationFrame(gameLoop)
 }
 
-const bee = new Bee();
-
 function main() {
-	MonoBehaivour.startAll()
 	Input.init()
+	BehaivourSystem.startAll()
 	gameLoop()
 }
 
 requestAnimationFrame(main)
-// ia do google falou que requestAnimationFrame era melhor pq o setInterval não espera o frame terminar, e um gameLoop por definição roda POP FRAME.
+// the setInterval function does not wait untill the frame finishes to run again, it will most likely run more times than we need
