@@ -2,10 +2,21 @@ class Bee extends MonoBehaiovur
 {
 	#animation
 	speed = 4
+	health = 3
+	score = 0
+
+	#healthIndicator
+	#scoreIndicator
 
 	start()
 	{
 		this.#animation = this.gameObject.getComponent(SpriteAnimation)
+
+		this.#scoreIndicator = new GameObject(280, 50)
+		.append(new TextRenderer(0, 35, "Arial", "white"))
+
+		this.#healthIndicator = new GameObject(140, 50)
+		.append(new TextRenderer(3, 35, "Arial", "white"))
 	}
 
 	update()
@@ -60,5 +71,21 @@ class Background extends MonoBehaiovur
 		{
 			transform.position = new Vector2(0, this.startPos)
 		}
+	}
+}
+
+class Indicator extends MonoBehaiovur
+{
+	/** @type {TextRenderer} */
+	#textRenderer
+
+	start()
+	{
+		this.#textRenderer = this.gameObject.getComponent(TextRenderer)
+	}
+
+	setContent(content)
+	{
+		this.#textRenderer.content = content
 	}
 }

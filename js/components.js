@@ -42,6 +42,23 @@ class SpriteRenderer extends Renderer
 	}
 }
 
+class TextRenderer extends Renderer
+{
+	color
+	content
+	fontFamily
+	fontSize
+ 
+	constructor(content, fontSize, fontFamily, color)
+	{
+		super()
+		this.color = color
+		this.content = content
+		this.fontFamily = fontFamily
+		this.fontSize = fontSize
+	}
+}
+
 class SpriteAnimation extends Component
 {
 	currentFrame = 0
@@ -66,7 +83,6 @@ class SpriteAnimation extends Component
 		if (this.#timer >= this.#deltaFrameDuration)
 		{
 			this.#timer = 0
-			console.log("step")
 			this.frameStep()
 		}
 	}

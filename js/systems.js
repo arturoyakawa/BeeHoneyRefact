@@ -90,7 +90,9 @@ class RendererSystem extends System
 	 */
 	static update(renderer)
 	{
-		
+		let transform = renderer.gameObject.getComponent(Transform)
+		const position = transform.position
+		const scale = transform.scale
 		switch (renderer.constructor)
 		{
 			case SpriteRenderer:
@@ -99,10 +101,14 @@ class RendererSystem extends System
 				let img = new Image()
 				img.src = spriteRenderer.image
 
-				const transform = spriteRenderer.gameObject.getComponent(Transform)
-				const position = transform.position
-				const scale = transform.scale
 				canvas.drawImage(img,position.x, position.y, scale.x, scale.y)
+				break
+			case TextRenderer:
+				/** @type {TextRenderer} */
+				const textRenderer = renderer
+				canvas.font = textRenderer.fontSize + "px "+textRenderer.fontFamily
+        		canvas.fillStyle = textRenderer.color
+        		canvas.fillText(textRenderer.content,position.x,position.y)
 				break
 		}
 	}
