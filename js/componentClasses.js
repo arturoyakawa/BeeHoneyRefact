@@ -1,15 +1,3 @@
-class Component {
-	parent
-
-	constructor(parent) {
-		this.parent = parent
-	}
-
-	destroy() {
-		this.parent = null
-	}
-}
-
 class SpriteRenderer extends Component {
 	constructor() {
 		super()

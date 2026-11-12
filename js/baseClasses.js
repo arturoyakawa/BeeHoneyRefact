@@ -1,3 +1,37 @@
+class GameObject {
+
+}
+
+class Component {
+  	static #profiles = new WeakMap();
+  	parent = null;
+
+  	static #getRegistry(parent) {
+    	return Component.#profiles.get(parent);
+  	}
+
+  	init(parent) {
+    	this.parent = parent;
+    
+    	if (!Component.#profiles.has(parent)) {
+      		Component.#profiles.set(parent, new Map());
+		}
+    
+    	Component.#getRegistry(parent).set(this.constructor, this);
+  	}
+
+  	static get(parent, componentClass) {
+    	return Component.#getRegistry(parent)?.get(componentClass) || null;
+  	}
+
+  	destroy() {
+    	if (this.parent) {
+      		Component.#getRegistry(this.parent)?.delete(this.constructor);
+    	}
+    	this.parent = null;
+  	}
+}
+
 class MonoBehaivour {
 	static #profiles = new Map()
 	static #nextId = 1
