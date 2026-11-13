@@ -24,6 +24,15 @@ class MonoBehaiovur extends Component
 	}
 }
 
+class Physics extends Component
+{
+	constructor()
+	{
+		super()
+		PhysicsSystem.register(this)
+	}
+}
+
 class Renderer extends Component
 {
 	constructor()
@@ -112,12 +121,45 @@ class VerticalScroller extends Component
 		this.initial = initial
 	}
 
+	reset()
+	{
+		this.transform.position = new Vector2(Math.random() * (500-this.transform.scale.x), this.initial)
+	}
+
 	update(increment)
 	{
 		this.transform.position.add(Vector2.up.copy().scale(increment * Time.deltaTime))
 		if (this.transform.position.y > this.threshold)
 		{
-			this.transform.position = new Vector2(Math.random() * (500-this.transform.scale.x), this.initial)
+			this.reset()
 		}
+	}
+}
+
+class Collider extends Physics
+{
+	/** @type (Vector2) */
+	relativeOrigin
+
+	/** @type {Vector2} */
+	size
+
+	/** @type {Vector2} */
+	event
+
+	OnCollisionEnter = new Signal()
+
+	constructor(origin, size)
+	{
+		super()
+		this.relativeOrigin = origin
+		this.size = size
+	}
+
+	getOrigin()
+	{
+		//return this.relativeOrigin.copy().add(this.gameObject.getComponent(Transform).position)
+		//console.log(this.origin)
+		return this.gameObject.getComponent(Transform).position.copy().add(this.relativeOrigin)
 	}
 }

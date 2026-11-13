@@ -43,8 +43,8 @@ class GameObject
 
 	/**
  	* @template {Component} T
- 	* @param {new (...args: any[]) => T} componentClass
- 	* @returns {T | undefined}
+ 	* @param {new (...args: any[]) => T} component
+ 	* @returns {T}
  	*/
 	getComponent(component)
 	{

@@ -7,6 +7,7 @@ class Bee extends MonoBehaiovur
 
 	#healthIndicator
 	#scoreIndicator
+	#collider
 
 	start()
 	{
@@ -17,6 +18,10 @@ class Bee extends MonoBehaiovur
 
 		this.#healthIndicator = new GameObject(140, 50)
 		.append(new TextRenderer(3, 35, "Arial", "white"))
+
+		const collider = this.gameObject.getComponent(Collider)
+		this.#collider = collider
+		collider.OnCollisionEnter.Connect(this.onCollisionEnter)
 	}
 
 	update()
@@ -31,6 +36,11 @@ class Bee extends MonoBehaiovur
 			this.transform.position.add(Vector2.right.copy().scale(-this.speed * Time.deltaTime))
 		}
 	}
+
+	onCollisionEnter(other)
+	{
+		//console.log("bee is tweaking!")
+	}
 }
 
 class Spider extends MonoBehaiovur
@@ -39,6 +49,7 @@ class Spider extends MonoBehaiovur
 	#animation
 	/** @type {VerticalScroller} */
 	#verticalScroller
+	#collider
 
 	speed = 3*166
 
@@ -46,6 +57,10 @@ class Spider extends MonoBehaiovur
 	{
 		this.#animation = this.gameObject.getComponent(SpriteAnimation)	
 		this.#verticalScroller = this.gameObject.getComponent(VerticalScroller)
+
+		const collider = this.gameObject.getComponent(Collider)
+		this.#collider = collider
+		collider.OnCollisionEnter.Connect(this.onCollisionEnter.bind(this))
 	}
 
 	update()
@@ -53,23 +68,43 @@ class Spider extends MonoBehaiovur
 		this.#animation.update()
 		this.#verticalScroller.update(this.speed)
 	}
+
+	onCollisionEnter()
+	{
+		this.#verticalScroller.reset()
+	}
 }
 
 class Flower extends MonoBehaiovur
 {
 	/** @type {VerticalScroller} */
 	#verticalScroller
+	/** @type {SpriteAnimation} */
+	#animation
+	#collider
 
 	speed = 3*166
 
 	start()
 	{
+		this.#animation = this.gameObject.getComponent(SpriteAnimation)	
 		this.#verticalScroller = this.gameObject.getComponent(VerticalScroller)
+
+		const collider = this.gameObject.getComponent(Collider)
+		this.#collider = collider
+		collider.OnCollisionEnter.Connect(this.onCollisionEnter.bind(this))
 	}
 
 	update()
 	{
+		this.#animation.update()
 		this.#verticalScroller.update(this.speed)
+	}
+
+	onCollisionEnter()
+	{
+		//console.log("get flower!")
+		this.#verticalScroller.reset()
 	}
 }
 

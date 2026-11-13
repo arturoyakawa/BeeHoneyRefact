@@ -1,6 +1,6 @@
 /////////////  DEBUG ///////////////////////////
 
-const desiredFps = 30
+const desiredFps = 166
 const frameInterval = 1 / desiredFps
 
 ///////////////////////////////////////////////
@@ -21,6 +21,10 @@ const bee = new GameObject(200,500,100,100)
 .append(new SpriteAnimation(4, .08, frame => {
 	return "img/bee"+frame+".png"
 }))
+.append(new Collider(
+	new Vector2(25, 10),
+	new Vector2(50, 80)
+))
 
 const spider = new GameObject(100,100,100,100)
 .append(new Spider())
@@ -29,11 +33,23 @@ const spider = new GameObject(100,100,100,100)
 	return "img/spider"+frame+".png	"
 }))
 .append(new VerticalScroller(690, -100))
+.append(new Collider(
+	new Vector2(25, 10),
+	new Vector2(50, 80)
+))
 
 const flower = new GameObject(0,0,50,50)
 .append(new Flower())
 .append(new SpriteRenderer("img/florwer1.png"))
 .append(new VerticalScroller(690, -100))
+.append(new Collider(
+	Vector2.zero,
+	Vector2.one.scale(50)
+))
+.append(new SpriteAnimation(2, .08, frame => {
+	return "img/florwer"+frame+".png"
+}))
+
 
 ///////////////////////////////////////////////
 
@@ -54,6 +70,7 @@ function gameLoop() {
 	BehaivourSystem.tick()
 	TransformSystem.tick()
 	RendererSystem.tick()
+	PhysicsSystem.tick()
 }
 
 function main() {

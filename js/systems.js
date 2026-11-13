@@ -28,7 +28,7 @@ class System
 
 	static updateAll()
 	{
-		this.forEachComponent(this.update)
+		this.forEachComponent(component => this.update(component))
 	}
 
 	static update(component)
@@ -116,13 +116,46 @@ class RendererSystem extends System
 
 class PhysicsSystem extends System
 {
+	/** @type {Collider[]} */
 	static components = new Set()
 
-	static update(physicsComponent)
+	/** @param {Collider} colliderA */
+	static update(colliderA)
 	{
-		switch (physicsComponent)
-		{
-			
-		}
+		canvas.fillStyle = "red"
+		canvas.lineWidth = 2
+
+		//const t = colliderA.getOrigin()
+	//	canvas.strokeRect(t.x, t.y, colliderA.size.x,colliderA.size.y)
+		//canvas.fillRect(colliderA.getOrigin().x, colliderA.getOrigin().x, colliderA.size.x, colliderA.size.y)
+
+		for (const colliderB of this.components)
+        {
+            if (colliderA === colliderB || colliderA.gameObject === colliderB.gameObject)
+                continue
+
+            if (this.checkCollision(colliderA, colliderB))
+            {
+				//console.log(colliderA, colliderB)
+				colliderA.OnCollisionEnter.Fire(colliderB)
+                colliderB.OnCollisionEnter.Fire(colliderA)
+            }
+        }
 	}
+
+	/**
+	 * @param {Collider} a
+	 * @param {Collider} b
+	 */
+	static checkCollision(a, b)
+    {
+		const ogA = a.getOrigin()
+		const ogB = b.getOrigin()
+        return (
+            ogA.x < ogB.x + b.size.x &&
+            ogA.x + a.size.x > ogB.x &&
+            ogA.y < ogB.y + b.size.y &&
+            ogA.y + a.size.y > ogB.y
+        )
+    }
 }

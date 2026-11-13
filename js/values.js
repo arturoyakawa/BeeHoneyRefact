@@ -3,8 +3,25 @@ class Vector2
 	#x = 0
 	#y = 0
 
-	static right = new Vector2(1,0)
-	static up = new Vector2(0,1)
+	static get right()
+	{
+		return new Vector2(1,0)
+	}
+
+	static get up()
+	{
+		return new Vector2(0,1)
+	}
+
+	static get zero()
+	{
+		return new Vector2(0,0)
+	}
+
+	static get one()
+	{
+		return new Vector2(1,1)
+	}
 
 	get x()
 	{
@@ -112,5 +129,57 @@ class Input
 	static isKeyDown(keyCode)
 	{
 		return Input.#keys.get(keyCode) === true;
+	}
+}
+
+class Connection
+{
+	/** @type {Event} */
+	event
+	method
+
+	constructor(event, method)
+	{
+		this.method = method
+		this.event = event
+	}
+
+	Disconnect()
+	{
+		this.event.Disconnect(this)
+		this.event = null
+	}
+}
+
+class Signal
+{
+	connections = new Set()
+
+	Connect(method)
+	{
+		const conc = new Connection(this, method)
+		this.connections.add(conc)
+		return conc
+	}
+
+	Disconnect(connection)
+	{
+		this.connections.delete(connection)
+	}
+
+	Fire(...args)
+	{
+		for (const conc of this.connections)
+		{
+			conc.method(...args)
+		}
+	}
+
+	DisconnectAll()
+	{
+		for (const conc of this.connections)
+		{
+			conc.Disconnect()
+		}
 	}
 }
