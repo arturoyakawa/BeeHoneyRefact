@@ -50,7 +50,6 @@ const flower = new GameObject(0,0,50,50)
 	return "img/florwer"+frame+".png"
 }))
 
-
 ///////////////////////////////////////////////
 
 function gameLoop() {

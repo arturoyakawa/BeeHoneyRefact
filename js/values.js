@@ -157,6 +157,10 @@ class Signal
 
 	Connect(method)
 	{
+		if (!method)
+		{
+			throw new Error("Tried connecting signal to method that does not exist")
+		}
 		const conc = new Connection(this, method)
 		this.connections.add(conc)
 		return conc

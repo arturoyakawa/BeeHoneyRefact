@@ -1,5 +1,7 @@
 class Transform extends Component
 {
+	/** @type {GameObject} */
+	gameObject
 	position
 	scale
 
@@ -158,8 +160,6 @@ class Collider extends Physics
 
 	getOrigin()
 	{
-		//return this.relativeOrigin.copy().add(this.gameObject.getComponent(Transform).position)
-		//console.log(this.origin)
 		return this.gameObject.getComponent(Transform).position.copy().add(this.relativeOrigin)
 	}
 }

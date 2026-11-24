@@ -5,7 +5,9 @@ class Bee extends MonoBehaiovur
 	health = 3
 	score = 0
 
+	/** @type {TextRenderer} */
 	#healthIndicator
+	/** @type {TextRenderer} */
 	#scoreIndicator
 	#collider
 
@@ -15,13 +17,14 @@ class Bee extends MonoBehaiovur
 
 		this.#scoreIndicator = new GameObject(280, 50)
 		.append(new TextRenderer(0, 35, "Arial", "white"))
+		.getComponent(TextRenderer)
 
 		this.#healthIndicator = new GameObject(140, 50)
 		.append(new TextRenderer(3, 35, "Arial", "white"))
+		.getComponent(TextRenderer)
 
 		const collider = this.gameObject.getComponent(Collider)
 		this.#collider = collider
-		collider.OnCollisionEnter.Connect(this.onCollisionEnter)
 	}
 
 	update()
@@ -37,9 +40,14 @@ class Bee extends MonoBehaiovur
 		}
 	}
 
-	onCollisionEnter(other)
+	GivePoint()
 	{
-		//console.log("bee is tweaking!")
+		this.#scoreIndicator.content += 1
+	}
+
+	DealDamage()
+	{
+		this.#healthIndicator.content -= 1
 	}
 }
 
@@ -69,9 +77,12 @@ class Spider extends MonoBehaiovur
 		this.#verticalScroller.update(this.speed)
 	}
 
-	onCollisionEnter()
+	/** @param {Collider} other */
+	onCollisionEnter(other)
 	{
 		this.#verticalScroller.reset()
+		const bee = other.gameObject.getComponent(Bee)
+		bee.DealDamage()
 	}
 }
 
@@ -101,10 +112,12 @@ class Flower extends MonoBehaiovur
 		this.#verticalScroller.update(this.speed)
 	}
 
-	onCollisionEnter()
+	/** @param {Collider} other */
+	onCollisionEnter(other)
 	{
-		//console.log("get flower!")
 		this.#verticalScroller.reset()
+		const bee = other.gameObject.getComponent(Bee)
+		bee.GivePoint()
 	}
 }
 

@@ -136,7 +136,6 @@ class PhysicsSystem extends System
 
             if (this.checkCollision(colliderA, colliderB))
             {
-				//console.log(colliderA, colliderB)
 				colliderA.OnCollisionEnter.Fire(colliderB)
                 colliderB.OnCollisionEnter.Fire(colliderA)
             }
