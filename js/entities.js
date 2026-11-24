@@ -23,10 +23,11 @@ class GameObject
 	_internalDestroy()
 	{
 		GameObject.#profiles.delete(this.id)
-		for (const comp in this.#components.values())
+		for (const comp of this.#components.values())
 		{
 			comp.destroy()
 		}
+		this.#components.clear()
 	}
 
 	destroy()
@@ -53,10 +54,11 @@ class GameObject
 
 	static destroyPending()
 	{
-		for (const obj in GameObject.#destroyQueue)
+		for (const obj of GameObject.#destroyQueue)
 		{
 			obj._internalDestroy()	
 		}
+		GameObject.#destroyQueue = []
 	}
 }
 
@@ -64,6 +66,7 @@ class Component
 {
 	/** @type {GameObject} */
 	gameObject = null
+	onDestroy = new Signal()
 
 	setParent(parent)
 	{
@@ -73,9 +76,7 @@ class Component
 
 	destroy()
 	{
-		// optional function call using the ?. operator
-		this.OnDestroy?.()
-
+		this.onDestroy.Fire()
 		this.gameObject = null
 	}
 }

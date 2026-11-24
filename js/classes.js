@@ -48,6 +48,12 @@ class Bee extends MonoBehaiovur
 	DealDamage()
 	{
 		this.#healthIndicator.content -= 1
+		if (this.#healthIndicator.content == 0)
+		{
+			this.gameObject.destroy()
+			this.#healthIndicator.gameObject.destroy()
+			this.#scoreIndicator.gameObject.destroy()
+		}
 	}
 }
 

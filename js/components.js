@@ -1,7 +1,5 @@
 class Transform extends Component
 {
-	/** @type {GameObject} */
-	gameObject
 	position
 	scale
 
@@ -10,7 +8,6 @@ class Transform extends Component
 		super()
 		this.position = new Vector2(px, py)
 		this.scale = new Vector2(sx, sy)
-		TransformSystem.register(this)
 	}
 }
 
@@ -23,6 +20,9 @@ class MonoBehaiovur extends Component
 	{
 		super()
 		BehaivourSystem.register(this)
+		this.onDestroy.Connect(e => {
+			BehaivourSystem.delete(this)
+		})
 	}
 }
 
@@ -32,6 +32,9 @@ class Physics extends Component
 	{
 		super()
 		PhysicsSystem.register(this)
+		this.onDestroy.Connect(e => {
+			PhysicsSystem.delete(this)
+		})
 	}
 }
 
@@ -41,6 +44,9 @@ class Renderer extends Component
 	{
 		super()
 		RendererSystem.register(this)
+		this.onDestroy.Connect(e => {
+			RendererSystem.delete(this)
+		})
 	}
 }
 

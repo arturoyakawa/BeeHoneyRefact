@@ -3,6 +3,9 @@ const canvas = document.getElementById("palco").getContext("2d")
 
 class System
 {
+	/** @type {Set} */
+	components
+
 	static register(component)
 	{
 		this.components.add(component)
@@ -34,18 +37,6 @@ class System
 	static update(component)
 	{
 		throw new Error("You are suposed to implement your version of void update()")
-	}
-}
-
-class TransformSystem extends System
-{
-	static components = new Set()
-	/**
-	 * @param {Transform} transform 
-	 */
-	static update(transform)
-	{
-		
 	}
 }
 

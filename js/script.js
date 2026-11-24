@@ -65,11 +65,11 @@ function gameLoop() {
 
 	lastFrame = Time.time
 
-	GameObject.destroyPending()
 	BehaivourSystem.tick()
-	TransformSystem.tick()
 	RendererSystem.tick()
 	PhysicsSystem.tick()
+
+	GameObject.destroyPending()
 }
 
 function main() {
